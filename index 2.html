@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Fire Panel</title>
+<style>
+    * {
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+    body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #080808;
+        color: white;
+    }
+    .panel {
+        width: 340px;
+        padding: 22px;
+        border-radius: 20px;
+        background: #151515;
+        border: 1px solid #333;
+        box-shadow: 0 0 30px rgba(255, 70, 0, .25);
+    }
+    .title {
+        text-align: center;
+        font-size: 25px;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    .subtitle {
+        text-align: center;
+        color: #999;
+        font-size: 12px;
+        margin-bottom: 20px;
+    }
+    button {
+        width: 100%;
+        padding: 14px;
+        margin: 7px 0;
+        border: none;
+        border-radius: 12px;
+        color: white;
+        background: #292929;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: .2s;
+    }
+    button:hover {
+        transform: scale(1.02);
+        background: #353535;
+    }
+    .activate {
+        background: #e84b18;
+    }
+    .activate.active {
+        background: #18a957;
+    }
+    .toggle.active {
+        background: #e84b18;
+    }
+    .slider-box {
+        margin-top: 18px;
+        padding: 15px;
+        background: #202020;
+        border-radius: 14px;
+    }
+    .slider-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+    input[type="range"] {
+        width: 100%;
+        accent-color: #e84b18;
+    }
+    .status {
+        margin-top: 15px;
+        padding: 10px;
+        border-radius: 10px;
+        text-align: center;
+        background: #101010;
+        color: #aaa;
+        font-size: 12px;
+    }
+    .open-game {
+        margin-top: 15px;
+        background: #1877e8;
+    }
+    .warning {
+        margin-top: 12px;
+        color: #777;
+        text-align: center;
+        font-size: 10px;
+    }
+</style>
+</head>
+<body>
+<div class="panel">
+    <div class="title">FREE FIRE PANEL</div>
+    <div class="subtitle">Visual control panel</div>
+    <button id="activate" class="activate">
+        ACTIVATE PANEL
+    </button>
+    <button id="aimlock" class="toggle">
+        AIMLOCK: OFF
+    </button>
+    <button id="headtracking" class="toggle">
+        HEAD TRACKING: OFF
+    </button>
+    <div class="slider-box">
+        <div class="slider-header">
+            <span>Headshot Assistance</span>
+            <strong id="percentage">20%</strong>
+        </div>
+        <input
+            type="range"
+            id="slider"
+            min="20"
+            max="80"
+            value="20"
+        >
+    </div>
+    <button class="open-game" onclick="openGame()">
+        OPEN FREE FIRE
+    </button>
+    <div class="status" id="status">
+        Panel inactive
+    </div>
+    <div class="warning">
+        UI simulation only — does not modify or control the game.
+    </div>
+</div>
+<script>
+    let activated = false;
+    let aimlock = false;
+    let headtracking = false;
+    const activateBtn = document.getElementById("activate");
+    const aimlockBtn = document.getElementById("aimlock");
+    const headtrackingBtn = document.getElementById("headtracking");
+    const slider = document.getElementById("slider");
+    const percentage = document.getElementById("percentage");
+    const status = document.getElementById("status");
+    activateBtn.addEventListener("click", () => {
+        activated = !activated;
+        activateBtn.classList.toggle("active", activated);
+        activateBtn.textContent =
+            activated ? "PANEL ACTIVATED" : "ACTIVATE PANEL";
+        updateStatus();
+    });
+    aimlockBtn.addEventListener("click", () => {
+        aimlock = !aimlock;
+        aimlockBtn.classList.toggle("active", aimlock);
+        aimlockBtn.textContent =
+            aimlock ? "AIMLOCK: ON" : "AIMLOCK: OFF";
+        updateStatus();
+    });
+    headtrackingBtn.addEventListener("click", () => {
+        headtracking = !headtracking;
+        headtrackingBtn.classList.toggle("active", headtracking);
+        headtrackingBtn.textContent =
+            headtracking
+                ? "HEAD TRACKING: ON"
+                : "HEAD TRACKING: OFF";
+        updateStatus();
+    });
+    slider.addEventListener("input", () => {
+        percentage.textContent = slider.value + "%";
+        updateStatus();
+    });
+    function updateStatus() {
+        if (!activated) {
+            status.textContent = "Panel inactive";
+            return;
+        }
+        status.textContent =
+            "Panel active • Assistance: " +
+            slider.value + "%";
+    }
+    function openGame() {
+        // Attempts to open the Free Fire app using its Android URI.
+        // If unsupported, the browser simply stays on this page.
+        window.location.href = "freefire://";
+    }
+</script>
+</body>
+</html>
